@@ -1,73 +1,118 @@
-# Welcome to your Lovable project
+# BCOS Training Platform
 
-## Project info
+A comprehensive training and course management platform built with React, TypeScript, and Supabase.
 
-**URL**: https://lovable.dev/projects/60fa5120-af8f-4a19-b52a-dc34c7e3d71b
+## 🚀 Features
 
-## How can I edit this code?
+- **Course Management**: Full CRUD operations for courses with HTML content editor
+- **Enrollment System**: Unified enrollment forms with lead tracking
+- **Admin Panel**: Complete admin dashboard for managing courses, enrollments, and content
+- **Category System**: Organize courses by categories with custom icons and colors
+- **Lead Management**: Track enrollment leads with status management (confirmé, à confirmer, etc.)
+- **Responsive Design**: Modern UI/UX with Tailwind CSS and Shadcn UI components
+- **French Localization**: Fully localized interface in French
 
-There are several ways of editing your application.
+## 🛠️ Technologies
 
-**Use Lovable**
+- **Frontend**: React 18, TypeScript, Vite
+- **UI Components**: Shadcn UI, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Authentication, Storage)
+- **State Management**: React Query, React Router
+- **Icons**: Lucide React
+- **Forms**: React Hook Form, Zod validation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/60fa5120-af8f-4a19-b52a-dc34c7e3d71b) and start prompting.
+## 📦 Installation
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+# Install dependencies
+npm install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## 🔧 Configuration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The project uses Supabase for backend services. Configuration is in:
+- `src/lib/supabaseClient.ts` - Supabase client configuration
+- `supabase-config.ts` - Type definitions
 
-**Use GitHub Codespaces**
+## 📁 Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/          # React components
+│   ├── admin/          # Admin panel components
+│   ├── ui/             # Shadcn UI components
+│   └── ...             # Other components
+├── pages/              # Page components
+│   ├── admin/          # Admin pages
+│   └── ...             # Public pages
+├── lib/                # Utilities and services
+│   ├── supabaseClient.ts
+│   └── supabaseSimple.ts
+└── hooks/              # Custom React hooks
+```
 
-## What technologies are used for this project?
+## 🗄️ Database Schema
 
-This project is built with:
+### Tables
+- `formations` - Course/formation data
+- `categories` - Course categories
+- `enrollments` - Student enrollments with lead tracking
+- `users` - User accounts
+- `client_references` - Client references/portfolio
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🔐 Environment Variables
 
-## How can I deploy this project?
+Create a `.env.local` file (not committed to git):
 
-Simply open [Lovable](https://lovable.dev/projects/60fa5120-af8f-4a19-b52a-dc34c7e3d71b) and click on Share -> Publish.
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 📝 Features in Detail
 
-Yes, you can!
+### Course Management
+- Create, edit, delete courses
+- HTML content editor for course pages
+- Automatic slug generation
+- Category assignment
+- Price and duration management
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Enrollment System
+- Direct enrollment form on course pages
+- Comprehensive enrollment form in modal
+- Lead status tracking
+- Commercial notes and follow-up dates
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Admin Panel
+- Dashboard with statistics
+- Course management interface
+- Enrollment management with filtering
+- User management
+- Gallery management
+- Reference management
+
+## 🚀 Deployment
+
+This project can be deployed to:
+- Vercel
+- Netlify
+- Railway
+- Any static hosting service
+
+## 📄 License
+
+Private project - All rights reserved
+
+## 👨‍💻 Developer
+
+Developed by Amine
