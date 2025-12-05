@@ -348,6 +348,9 @@ const BilingualCourseForm = ({ course, isOpen, onClose, onSave }: BilingualCours
       // Prepare data for save
       const courseData: any = {
         ...formData,
+        // Convert empty strings to null for UUID fields
+        category_id: formData.category_id || null,
+        trainer_id: (formData as any).trainer_id || null,
         // Legacy fields for backward compatibility
         title: formData.title_fr || formData.title,
         description: formData.description_fr || formData.description,

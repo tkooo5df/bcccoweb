@@ -323,6 +323,9 @@ const EnhancedCourseForm = ({ course, isOpen, onClose, onSave }: EnhancedCourseF
       // Prepare data for saving
       const dataToSave = {
         ...formData,
+        // Convert empty strings to null for UUID fields
+        category_id: formData.category_id || null,
+        trainer_id: (formData as any).trainer_id || null,
         // Ensure legacy fields are populated from French
         title: formData.title_fr,
         description: formData.description_fr,
@@ -341,7 +344,7 @@ const EnhancedCourseForm = ({ course, isOpen, onClose, onSave }: EnhancedCourseF
       onSave();
       onClose();
     } catch (error) {
-      console.error('Error saving formation:', error);
+      console.error('Error saving course:', error);
       toast.error('Erreur lors de l\'enregistrement');
     } finally {
       setLoading(false);
