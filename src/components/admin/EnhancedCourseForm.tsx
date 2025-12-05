@@ -101,7 +101,7 @@ const EnhancedCourseForm = ({ course, isOpen, onClose, onSave }: EnhancedCourseF
     // Pricing
     price_ht: 0,
     price_ttc: 0,
-    currency: 'DA',
+    currency: 'DZD',
     
     // Media
     cover_image_url: '',
@@ -235,7 +235,7 @@ const EnhancedCourseForm = ({ course, isOpen, onClose, onSave }: EnhancedCourseF
         
         price_ht: course.price_ht || 0,
         price_ttc: course.price_ttc || 0,
-        currency: course.currency || 'DA',
+        currency: course.currency || 'DZD',
         
         cover_image_url: course.cover_image_url || '',
         
@@ -640,7 +640,7 @@ const EnhancedCourseForm = ({ course, isOpen, onClose, onSave }: EnhancedCourseF
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="DA">DA (Dinar Algérien)</SelectItem>
+                    <SelectItem value="DZD">DZD (Dinar Algérien)</SelectItem>
                     <SelectItem value="EUR">EUR (Euro)</SelectItem>
                     <SelectItem value="USD">USD (Dollar)</SelectItem>
                   </SelectContent>

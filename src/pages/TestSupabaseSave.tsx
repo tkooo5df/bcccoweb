@@ -51,7 +51,7 @@ const TestSupabaseSave = () => {
         price_ht: formData.price_ht,
         price_ttc: formData.price_ttc,
         price: formData.price_ttc,
-        currency: 'DA',
+        currency: 'DZD', // Algerian Dinar (ISO 4217)
         
         // Details
         duration: formData.duration,

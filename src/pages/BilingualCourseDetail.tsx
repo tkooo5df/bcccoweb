@@ -104,10 +104,18 @@ const BilingualCourseDetail = () => {
   };
 
   const formatPrice = (price: number, currency: string = 'EUR') => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: currency
-    }).format(price);
+    // Convert DA to DZD (Algerian Dinar ISO 4217 code)
+    const currencyCode = currency === 'DA' ? 'DZD' : currency;
+    
+    try {
+      return new Intl.NumberFormat('fr-FR', {
+        style: 'currency',
+        currency: currencyCode
+      }).format(price);
+    } catch (error) {
+      // Fallback: just show number with currency text
+      return `${price.toLocaleString('fr-FR')} ${currency}`;
+    }
   };
 
   const displayContent = getDisplayContent();
