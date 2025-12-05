@@ -14,6 +14,7 @@ import CourseDetail from "./pages/CourseDetail";
 import TestCourseLinks from "./pages/TestCourseLinks";
 import TestEnrollmentForm from "./pages/TestEnrollmentForm";
 import TestCourseCreation from "./pages/TestCourseCreation";
+import TestSupabaseSave from "./pages/TestSupabaseSave";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
@@ -119,6 +120,12 @@ const App = () => (
             <>
               <Header />
               <TestCourseCreation />
+            </>
+          } />
+          <Route path="/test-supabase-save" element={
+            <>
+              <Header />
+              <TestSupabaseSave />
             </>
           } />
           
