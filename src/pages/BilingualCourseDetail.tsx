@@ -130,24 +130,56 @@ const BilingualCourseDetail = () => {
         </div>
       </div>
 
-      {/* Categories Only */}
+      {/* Content */}
       <div className="container mx-auto px-4 py-12">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-center text-2xl">
-              {language === 'ar' ? 'الفئة' : 'Catégorie'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {course.category && (
-              <div className="flex justify-center">
-                <Badge variant="secondary" className="text-lg px-6 py-2">
-                  {language === 'ar' ? course.category.name_ar || course.category.name : course.category.name_fr || course.category.name}
-                </Badge>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Category Badge */}
+          {course.category && (
+            <div className="flex justify-center">
+              <Badge variant="secondary" className="text-lg px-6 py-2">
+                {language === 'ar' ? course.category.name_ar || course.category.name : course.category.name_fr || course.category.name}
+              </Badge>
+            </div>
+          )}
+
+          {/* Cover Image */}
+          {(course.cover_image_url || course.image_url) && (
+            <div className="w-full">
+              <img 
+                src={course.cover_image_url || course.image_url} 
+                alt={language === 'ar' ? course.title_ar || course.title_fr || course.title : course.title_fr || course.title}
+                className="w-full h-auto rounded-lg shadow-lg object-cover"
+              />
+            </div>
+          )}
+
+          {/* HTML Content */}
+          {(course.content_fr || course.content_ar || course.content) && (
+            <Card>
+              <CardContent className="p-0">
+                <div 
+                  className="prose prose-lg max-w-none p-6
+                    prose-headings:text-foreground
+                    prose-p:text-muted-foreground
+                    prose-strong:text-foreground
+                    prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+                    prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground
+                    prose-code:bg-muted prose-code:text-foreground prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                    prose-pre:bg-muted prose-pre:border
+                    prose-img:rounded-lg prose-img:shadow-md
+                    prose-ul:text-muted-foreground prose-ol:text-muted-foreground
+                    prose-li:text-muted-foreground"
+                  dir={language === 'ar' ? 'rtl' : 'ltr'}
+                  dangerouslySetInnerHTML={{ 
+                    __html: language === 'ar' 
+                      ? (course.content_ar || course.content_fr || course.content || '')
+                      : (course.content_fr || course.content || '')
+                  }}
+                />
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   );
