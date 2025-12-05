@@ -77,6 +77,20 @@ const App = () => (
               <Blog />
             </>
           } />
+          {/* Language-specific routes (higher priority) */}
+          <Route path="/:lang/formation/:slug" element={
+            <>
+              <Header />
+              <BilingualCourseDetail />
+            </>
+          } />
+          <Route path="/:lang/course/:slug" element={
+            <>
+              <Header />
+              <BilingualCourseDetail />
+            </>
+          } />
+          {/* Default routes (without language) */}
           <Route path="/formation/:slug" element={
             <>
               <Header />

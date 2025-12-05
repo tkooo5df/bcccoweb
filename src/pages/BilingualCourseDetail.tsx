@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,17 +18,33 @@ import {
   Loader2
 } from 'lucide-react';
 import { SupabaseService } from '@/lib/supabase';
-import DirectEnrollmentForm from '@/components/DirectEnrollmentForm';
+import DynamicEnrollmentForm from '@/components/DynamicEnrollmentForm';
 import { toast } from 'sonner';
 import type { Formation } from '../../supabase-config';
 
 const BilingualCourseDetail = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug, lang } = useParams<{ slug: string; lang?: string }>();
   const navigate = useNavigate();
-  const [language, setLanguage] = useState<'fr' | 'ar'>('fr');
+  const [searchParams] = useSearchParams();
+  
+  // Get language from URL parameter or query string
+  const urlLang = lang || searchParams.get('lang');
+  const [language, setLanguage] = useState<'fr' | 'ar'>(
+    urlLang === 'ar' ? 'ar' : 'fr'
+  );
+  
   const [course, setCourse] = useState<Formation | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Update language when URL changes
+  useEffect(() => {
+    if (lang === 'ar') {
+      setLanguage('ar');
+    } else if (lang === 'fr') {
+      setLanguage('fr');
+    }
+  }, [lang]);
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -40,6 +56,7 @@ const BilingualCourseDetail = () => {
 
       try {
         setLoading(true);
+        setError(null);
         const data = await SupabaseService.getFormationBySlug(slug);
         
         if (!data) {
@@ -140,14 +157,20 @@ const BilingualCourseDetail = () => {
               <Button
                 variant={language === 'fr' ? 'default' : 'outline'}
                 size="sm"
-                onClick={() => setLanguage('fr')}
+                onClick={() => {
+                  setLanguage('fr');
+                  navigate(`/fr/formation/${slug}`, { replace: true });
+                }}
               >
                 FR
               </Button>
               <Button
                 variant={language === 'ar' ? 'default' : 'outline'}
                 size="sm"
-                onClick={() => setLanguage('ar')}
+                onClick={() => {
+                  setLanguage('ar');
+                  navigate(`/ar/formation/${slug}`, { replace: true });
+                }}
               >
                 عربي
               </Button>
@@ -437,12 +460,16 @@ const BilingualCourseDetail = () => {
 
         {/* Enrollment Form */}
         <div className="max-w-4xl mx-auto mt-12">
-          <DirectEnrollmentForm
-            courseId={course.id}
-            courseTitle={displayContent.title}
-            coursePrice={course.price_ht || course.price}
-            courseCurrency={course.currency}
-            languagePreference={language}
+          <DynamicEnrollmentForm
+            course={course}
+            language={language}
+            onSuccess={() => {
+              toast.success(
+                language === 'fr'
+                  ? 'Inscription envoyée avec succès!'
+                  : 'تم إرسال التسجيل بنجاح!'
+              );
+            }}
           />
         </div>
       </div>
