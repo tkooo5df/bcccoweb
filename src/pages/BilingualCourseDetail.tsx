@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { SupabaseService } from '@/lib/supabase';
 import { toast } from 'sonner';
+import DynamicEnrollmentForm from '@/components/DynamicEnrollmentForm';
 import type { Formation } from '../../supabase-config';
 
 const BilingualCourseDetail = () => {
@@ -179,6 +180,28 @@ const BilingualCourseDetail = () => {
               </CardContent>
             </Card>
           )}
+
+          {/* Enrollment Form */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center text-2xl">
+                {language === 'ar' ? 'التسجيل في الدورة' : 'Inscription à la formation'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DynamicEnrollmentForm
+                course={course}
+                language={language}
+                onSuccess={() => {
+                  toast.success(
+                    language === 'fr'
+                      ? '✅ Inscription envoyée avec succès! Notre équipe vous contactera bientôt.'
+                      : '✅ تم إرسال التسجيل بنجاح! سيتصل بك فريقنا قريبًا.'
+                  );
+                }}
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
