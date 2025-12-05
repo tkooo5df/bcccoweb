@@ -139,8 +139,7 @@ export class SupabaseService {
       .from('formations')
       .select(`
         *,
-        category:categories(*),
-        trainer:users(*)
+        category:categories(*)
       `)
       .eq('is_active', true)
       .order('created_at', { ascending: false });
@@ -154,8 +153,7 @@ export class SupabaseService {
       .from('formations')
       .select(`
         *,
-        category:categories(*),
-        trainer:users(*)
+        category:categories(*)
       `)
       .eq('category_id', categoryId)
       .eq('is_active', true)
@@ -170,8 +168,7 @@ export class SupabaseService {
       .from('formations')
       .select(`
         *,
-        category:categories(*),
-        trainer:users(*)
+        category:categories(*)
       `)
       .eq('is_popular', true)
       .eq('is_active', true)
@@ -187,8 +184,7 @@ export class SupabaseService {
       .from('formations')
       .select(`
         *,
-        category:categories(*),
-        trainer:users(*)
+        category:categories(*)
       `)
       .eq('slug', slug)
       .eq('is_published', true)
