@@ -166,3 +166,4 @@ For issues or questions, check:
 2. TypeScript types in `supabase-config.ts`
 3. Service methods in `src/lib/supabase.ts`
 
+

@@ -92,3 +92,4 @@ This is the template structure that should be used when generating course conten
 - Responsive design (sm:, md:, lg: breakpoints)
 - Color scheme: green-600, blue-600, gray tones
 
+

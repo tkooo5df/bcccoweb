@@ -452,3 +452,4 @@ const BilingualCourseDetail = () => {
 
 export default BilingualCourseDetail;
 
+

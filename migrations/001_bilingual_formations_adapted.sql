@@ -211,3 +211,4 @@ COMMENT ON COLUMN enrollments.source IS 'Where the enrollment came from (website
 
 -- Migration completed successfully!
 
+
