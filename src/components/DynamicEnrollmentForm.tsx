@@ -38,8 +38,95 @@ const DynamicEnrollmentForm = ({ course, language, onSuccess }: DynamicEnrollmen
   const [formData, setFormData] = useState<FormData>({});
   const [errors, setErrors] = useState<FormErrors>({});
 
-  // Get form fields from course config
-  const formFields: FormField[] = (course as any).inscription_form_fields || [];
+  // Default form fields (unified for all courses)
+  const defaultFormFields: FormField[] = [
+    {
+      id: 'field_1',
+      name: 'full_name',
+      type: 'text',
+      label_fr: 'Nom complet',
+      label_ar: 'الاسم الكامل',
+      required: true,
+      placeholder_fr: 'Entrez votre nom complet',
+      placeholder_ar: 'أدخل اسمك الكامل',
+      order: 1
+    },
+    {
+      id: 'field_2',
+      name: 'email',
+      type: 'email',
+      label_fr: 'Email',
+      label_ar: 'البريد الإلكتروني',
+      required: true,
+      placeholder_fr: 'votre.email@exemple.com',
+      placeholder_ar: 'your.email@example.com',
+      order: 2
+    },
+    {
+      id: 'field_3',
+      name: 'phone',
+      type: 'phone',
+      label_fr: 'Téléphone',
+      label_ar: 'الهاتف',
+      required: true,
+      placeholder_fr: '+213 XX XX XX XX',
+      placeholder_ar: '+213 XX XX XX XX',
+      order: 3
+    },
+    {
+      id: 'field_4',
+      name: 'company',
+      type: 'text',
+      label_fr: 'Entreprise',
+      label_ar: 'الشركة',
+      required: false,
+      placeholder_fr: 'Nom de votre entreprise',
+      placeholder_ar: 'اسم شركتك',
+      order: 4
+    },
+    {
+      id: 'field_5',
+      name: 'position',
+      type: 'text',
+      label_fr: 'Poste',
+      label_ar: 'المنصب',
+      required: false,
+      placeholder_fr: 'Votre poste',
+      placeholder_ar: 'منصبك',
+      order: 5
+    },
+    {
+      id: 'field_6',
+      name: 'motivation',
+      type: 'textarea',
+      label_fr: 'Motivation',
+      label_ar: 'الدافع',
+      required: false,
+      placeholder_fr: 'Pourquoi souhaitez-vous suivre cette formation?',
+      placeholder_ar: 'لماذا تريد متابعة هذا التدريب؟',
+      order: 6
+    },
+    {
+      id: 'field_7',
+      name: 'how_did_you_hear',
+      type: 'select',
+      label_fr: 'Comment avez-vous connu BCOS?',
+      label_ar: 'كيف سمعت عن BCOS؟',
+      required: false,
+      options: [
+        { value: 'google', label_fr: 'Recherche Google', label_ar: 'بحث جوجل' },
+        { value: 'social', label_fr: 'Réseaux sociaux', label_ar: 'وسائل التواصل الاجتماعي' },
+        { value: 'referral', label_fr: 'Recommandation', label_ar: 'توصية' },
+        { value: 'website', label_fr: 'Site web', label_ar: 'الموقع الإلكتروني' },
+        { value: 'other', label_fr: 'Autre', label_ar: 'آخر' }
+      ],
+      order: 7
+    }
+  ];
+
+  // Get form fields from course config, or use default
+  const customFields: FormField[] = (course as any).inscription_form_fields || [];
+  const formFields: FormField[] = customFields.length > 0 ? customFields : defaultFormFields;
 
   // Validation functions
   const validateEmail = (email: string): boolean => {
@@ -295,21 +382,6 @@ const DynamicEnrollmentForm = ({ course, language, onSuccess }: DynamicEnrollmen
       </div>
     );
   };
-
-  // If no custom fields, show message
-  if (formFields.length === 0) {
-    return (
-      <Card>
-        <CardContent className="py-8">
-          <p className="text-center text-gray-500" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-            {language === 'fr' 
-              ? 'Formulaire d\'inscription non configuré pour cette formation.' 
-              : 'نموذج التسجيل غير مُكوَّن لهذه الدورة.'}
-          </p>
-        </CardContent>
-      </Card>
-    );
-  }
 
   // Success state
   if (submitted) {
