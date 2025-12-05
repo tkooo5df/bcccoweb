@@ -117,3 +117,5 @@ const SimpleEnrollmentForm = ({ courseId, courseTitle, trigger }: SimpleEnrollme
 
 export default SimpleEnrollmentForm;
 
+
+

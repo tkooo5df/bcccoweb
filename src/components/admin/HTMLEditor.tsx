@@ -161,3 +161,5 @@ const HTMLEditor = ({ value, onChange, placeholder = "Écrivez le contenu du cou
 
 export default HTMLEditor;
 
+
+

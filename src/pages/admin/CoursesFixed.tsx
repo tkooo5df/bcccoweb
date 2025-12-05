@@ -26,13 +26,17 @@ import {
 } from '@/components/ui/select';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SimpleCourseForm from '@/components/admin/SimpleCourseForm';
+import BilingualCourseForm from '@/components/admin/BilingualCourseForm';
 import { SimpleSupabaseService } from '@/lib/supabaseSimple';
+import { SupabaseService } from '@/lib/supabase';
 
 const CoursesFixed = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isBilingualFormOpen, setIsBilingualFormOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<any | null>(null);
   const [courses, setCourses] = useState<any[]>([]);
   const [categoriesData, setCategoriesData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -122,11 +126,19 @@ const CoursesFixed = () => {
   const displayCategories = categoriesData.length > 0 ? categoriesData : fallbackCategories;
 
   const handleCreateCourse = () => {
-    setIsFormOpen(true);
+    setEditingCourse(null);
+    setIsBilingualFormOpen(true);
+  };
+
+  const handleEditCourse = (course: any) => {
+    setEditingCourse(course);
+    setIsBilingualFormOpen(true);
   };
 
   const handleSaveCourse = () => {
     setIsFormOpen(false);
+    setIsBilingualFormOpen(false);
+    setEditingCourse(null);
     setRefreshTrigger(prev => prev + 1); // Refresh the courses list
   };
 
@@ -356,7 +368,11 @@ const CoursesFixed = () => {
 
                         <div className="pt-4 border-t flex items-center justify-between mt-auto">
                           <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleEditCourse(course)}
+                            >
                               <Edit className="w-4 h-4 mr-1" />
                               Modifier
                             </Button>
@@ -394,6 +410,17 @@ const CoursesFixed = () => {
         <SimpleCourseForm
           isOpen={isFormOpen}
           onClose={() => setIsFormOpen(false)}
+          onSave={handleSaveCourse}
+        />
+
+        {/* Bilingual Course Form */}
+        <BilingualCourseForm
+          course={editingCourse}
+          isOpen={isBilingualFormOpen}
+          onClose={() => {
+            setIsBilingualFormOpen(false);
+            setEditingCourse(null);
+          }}
           onSave={handleSaveCourse}
         />
       </div>

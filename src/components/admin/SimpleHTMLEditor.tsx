@@ -227,3 +227,5 @@ const SimpleHTMLEditor = ({
 
 export default SimpleHTMLEditor;
 
+
+

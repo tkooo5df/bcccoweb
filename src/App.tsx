@@ -19,11 +19,14 @@ import Dashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
 import Courses from "./pages/admin/Courses";
 import CoursesFixed from "./pages/admin/CoursesFixed";
+import Categories from "./pages/admin/Categories";
 import Trainers from "./pages/admin/Trainers";
 import References from "./pages/admin/References";
 import Enrollments from "./pages/admin/Enrollments";
+import EnrollmentsCRM from "./pages/admin/EnrollmentsCRM";
 import GalleryManagement from "./pages/admin/GalleryManagement";
 import Login from "./pages/admin/Login";
+import BilingualCourseDetail from "./pages/BilingualCourseDetail";
 
 const queryClient = new QueryClient();
 
@@ -77,7 +80,13 @@ const App = () => (
           <Route path="/formation/:slug" element={
             <>
               <Header />
-              <CourseDetail />
+              <BilingualCourseDetail />
+            </>
+          } />
+          <Route path="/course/:slug" element={
+            <>
+              <Header />
+              <BilingualCourseDetail />
             </>
           } />
           <Route path="/test-course-links" element={
@@ -104,9 +113,10 @@ const App = () => (
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/courses" element={<CoursesFixed />} />
+          <Route path="/admin/categories" element={<Categories />} />
           <Route path="/admin/trainers" element={<Trainers />} />
           <Route path="/admin/references" element={<References />} />
-          <Route path="/admin/enrollments" element={<Enrollments />} />
+          <Route path="/admin/enrollments" element={<EnrollmentsCRM />} />
           <Route path="/admin/gallery" element={<GalleryManagement />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

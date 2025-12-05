@@ -85,6 +85,54 @@ export class SupabaseService {
     return data;
   }
 
+  static async createCategory(category: any) {
+    const { data, error } = await supabase
+      .from('categories')
+      .insert([category])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
+
+  static async updateCategory(id: string, updates: any) {
+    const { data, error } = await supabase
+      .from('categories')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
+
+  static async deleteCategory(id: string) {
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+  }
+
+  static async updateCategoryOrder(categories: { id: string; display_order: number }[]) {
+    const updates = categories.map(cat => 
+      supabase
+        .from('categories')
+        .update({ display_order: cat.display_order })
+        .eq('id', cat.id)
+    );
+    
+    const results = await Promise.all(updates);
+    const errors = results.filter(r => r.error);
+    
+    if (errors.length > 0) {
+      throw errors[0].error;
+    }
+  }
+
   // Formations
   static async getFormations() {
     const { data, error } = await supabase
@@ -433,6 +481,88 @@ export class SupabaseService {
       .insert([eventData]);
     
     if (error) console.error('Event tracking error:', error);
+    return data;
+  }
+
+  // Storage
+  static async uploadFile(bucket: string, path: string, file: File) {
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload(path, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+    
+    if (error) throw error;
+    return data;
+  }
+
+  static async getPublicUrl(bucket: string, path: string) {
+    const { data } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(path);
+    
+    return data.publicUrl;
+  }
+
+  static async deleteFile(bucket: string, path: string) {
+    const { error } = await supabase.storage
+      .from(bucket)
+      .remove([path]);
+    
+    if (error) throw error;
+  }
+
+  // Enrollments
+  static async createEnrollment(enrollment: any) {
+    const { data, error } = await supabase
+      .from('enrollments')
+      .insert([enrollment])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
+
+  static async getEnrollments(filters?: {
+    status?: string;
+    source?: string;
+    language?: string;
+  }) {
+    let query = supabase
+      .from('enrollments')
+      .select(`
+        *,
+        formation:formations(id, title, slug, price, currency, title_fr, title_ar)
+      `)
+      .order('enrollment_date', { ascending: false });
+
+    if (filters?.status) {
+      query = query.eq('status', filters.status);
+    }
+    if (filters?.source) {
+      query = query.eq('source', filters.source);
+    }
+    if (filters?.language) {
+      query = query.eq('language_preference', filters.language);
+    }
+
+    const { data, error } = await query;
+    
+    if (error) throw error;
+    return data;
+  }
+
+  static async updateEnrollmentStatus(id: string, updates: any) {
+    const { data, error } = await supabase
+      .from('enrollments')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
     return data;
   }
 }

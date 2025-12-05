@@ -68,3 +68,6 @@ coverage
 # Temporary files
 *.tmp
 .cache
+
+# Local Netlify folder
+.netlify

@@ -28,6 +28,12 @@ export interface Category {
   color: string;
   created_at: string;
   updated_at: string;
+  // Bilingual fields
+  name_fr?: string;
+  name_ar?: string;
+  description_fr?: string;
+  description_ar?: string;
+  display_order?: number;
 }
 
 export interface Formation {
@@ -58,6 +64,29 @@ export interface Formation {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  // Bilingual French fields
+  title_fr?: string;
+  description_fr?: string;
+  content_fr?: string;
+  objectives_fr?: string[];
+  prerequisites_fr?: string;
+  program_fr?: string;
+  target_audience_fr?: string;
+  // Bilingual Arabic fields
+  title_ar?: string;
+  description_ar?: string;
+  content_ar?: string;
+  objectives_ar?: string[];
+  prerequisites_ar?: string;
+  program_ar?: string;
+  target_audience_ar?: string;
+  // Enhanced pricing fields
+  price_ht?: number;
+  price_ttc?: number;
+  reference?: string;
+  tags?: string[];
+  is_published?: boolean;
+  cover_image_url?: string;
 }
 
 export interface BlogCategory {
@@ -180,4 +209,49 @@ export interface SiteSetting {
   created_at: string;
   updated_at: string;
 }
+
+export interface Enrollment {
+  id: string;
+  formation_id: string;
+  course_id?: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  company?: string;
+  position?: string;
+  experience_level?: string;
+  motivation?: string;
+  preferred_date?: string;
+  how_did_you_hear?: string;
+  special_requirements?: string;
+  status: 'new' | 'to_confirm' | 'confirmed' | 'cancelled';
+  source?: string;
+  language_preference?: 'fr' | 'ar';
+  notes?: string;
+  commercial_notes?: string;
+  contact_date?: string;
+  follow_up_date?: string;
+  enrollment_date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface LandingPage {
+  id: string;
+  formation_id: string;
+  language: 'fr' | 'ar';
+  title: string;
+  meta_description?: string;
+  hero_content?: string;
+  features?: any;
+  testimonials?: any;
+  cta_text?: string;
+  seo_keywords?: string[];
+  is_active: boolean;
+  generated_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+
 

@@ -95,3 +95,5 @@ git remote add origin YOUR_REPO_URL
 - Never commit `.env` files or API keys directly
 - Supabase keys in the code are public keys (anon keys) which are safe to commit
 
+
+
