@@ -511,13 +511,25 @@ export class SupabaseService {
 
   // Enrollments
   static async createEnrollment(enrollment: any) {
+    console.log('💾 Tentative de sauvegarde dans Supabase:', enrollment);
+    
     const { data, error } = await supabase
       .from('enrollments')
       .insert([enrollment])
       .select()
       .single();
     
-    if (error) throw error;
+    if (error) {
+      console.error('❌ Erreur Supabase lors de la création:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
+      });
+      throw error;
+    }
+    
+    console.log('✅ Inscription créée avec succès:', data);
     return data;
   }
 

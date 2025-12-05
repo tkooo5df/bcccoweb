@@ -200,31 +200,74 @@ const DynamicEnrollmentForm = ({ course, language, onSuccess }: DynamicEnrollmen
       return;
     }
 
+    // Final validation - ensure required fields are not empty
+    const fullName = (formData.full_name as string)?.trim() || '';
+    const email = (formData.email as string)?.trim() || '';
+    const phone = (formData.phone as string)?.trim() || '';
+
+    if (!fullName || !email || !phone) {
+      toast.error(
+        language === 'fr' 
+          ? 'Veuillez remplir tous les champs requis' 
+          : 'يرجى ملء جميع الحقول المطلوبة'
+      );
+      return;
+    }
+
+    if (!course.id) {
+      toast.error(
+        language === 'fr' 
+          ? 'Erreur: ID de formation manquant' 
+          : 'خطأ: معرف الدورة مفقود'
+      );
+      return;
+    }
+
     try {
       setLoading(true);
 
-      // Prepare enrollment data
-      const enrollmentData = {
+      // Prepare enrollment data - clean up empty values
+      const enrollmentData: any = {
         formation_id: course.id,
         course_id: course.id, // Backward compatibility
-        full_name: formData.full_name as string || '',
-        email: formData.email as string || '',
-        phone: formData.phone as string || '',
-        company: formData.company as string || '',
-        position: formData.position as string || '',
-        motivation: formData.motivation as string || '',
-        how_did_you_hear: formData.how_did_you_hear as string || '',
-        special_requirements: formData.special_requirements as string || '',
-        experience_level: formData.experience_level as string || '',
-        preferred_date: formData.preferred_date as string || '',
-        status: 'new' as const,
-        source: 'website_form',
-        language_preference: language,
-        enrollment_date: new Date().toISOString(),
+        full_name: fullName,
+        email: email,
+        phone: phone,
+        status: 'new',
+        source: 'website',
+        language_preference: language || 'fr',
+        // enrollment_date has DEFAULT NOW() in DB, so we don't need to send it
       };
 
+      // Add optional fields only if they have values
+      if (formData.company && (formData.company as string).trim()) {
+        enrollmentData.company = (formData.company as string).trim();
+      }
+      if (formData.position && (formData.position as string).trim()) {
+        enrollmentData.position = (formData.position as string).trim();
+      }
+      if (formData.motivation && (formData.motivation as string).trim()) {
+        enrollmentData.motivation = (formData.motivation as string).trim();
+      }
+      if (formData.how_did_you_hear && (formData.how_did_you_hear as string).trim()) {
+        enrollmentData.how_did_you_hear = (formData.how_did_you_hear as string).trim();
+      }
+      if (formData.special_requirements && (formData.special_requirements as string).trim()) {
+        enrollmentData.special_requirements = (formData.special_requirements as string).trim();
+      }
+      if (formData.experience_level && (formData.experience_level as string).trim()) {
+        enrollmentData.experience_level = (formData.experience_level as string).trim();
+      }
+      if (formData.preferred_date && (formData.preferred_date as string).trim()) {
+        enrollmentData.preferred_date = (formData.preferred_date as string).trim();
+      }
+
+      console.log('📤 Envoi des données d\'inscription:', enrollmentData);
+
       // Save to Supabase
-      await SupabaseService.createEnrollment(enrollmentData);
+      const result = await SupabaseService.createEnrollment(enrollmentData);
+      
+      console.log('✅ Inscription sauvegardée avec succès:', result);
 
       // Success
       setSubmitted(true);
@@ -244,13 +287,25 @@ const DynamicEnrollmentForm = ({ course, language, onSuccess }: DynamicEnrollmen
         setSubmitted(false);
       }, 3000);
 
-    } catch (error) {
-      console.error('Error submitting enrollment:', error);
-      toast.error(
-        language === 'fr' 
-          ? 'Erreur lors de l\'envoi. Veuillez réessayer.' 
-          : 'خطأ في الإرسال. يرجى المحاولة مرة أخرى.'
-      );
+    } catch (error: any) {
+      console.error('❌ Erreur lors de l\'envoi de l\'inscription:', error);
+      console.error('Détails de l\'erreur:', {
+        message: error?.message,
+        code: error?.code,
+        details: error?.details,
+        hint: error?.hint
+      });
+      
+      // More detailed error message
+      let errorMessage = language === 'fr' 
+        ? 'Erreur lors de l\'envoi. Veuillez réessayer.' 
+        : 'خطأ في الإرسال. يرجى المحاولة مرة أخرى.';
+      
+      if (error?.message) {
+        errorMessage += `\n${error.message}`;
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
